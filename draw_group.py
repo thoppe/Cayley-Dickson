@@ -50,6 +50,8 @@ def cayley_graph(G):
     # Determine the loop structure
     g_loop = nx.from_numpy_matrix(C[0])
     loops = sorted(list(nx.connected_components(g_loop)))
+
+    loops = [np.roll(x,k) for k,x in enumerate(loops)]
     
     # loops always come in groups of four
     square = np.array([[-1,-1.0],[-1,1],[1,1],[1,-1]])*(1/np.sqrt(2))
