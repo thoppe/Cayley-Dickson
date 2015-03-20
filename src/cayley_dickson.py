@@ -2,6 +2,19 @@ import pandas as pd
 import itertools
 import numbers
 
+# Pull the to the outside so we can provide memoization
+__memoize_product = {}
+def cayley_product(x,y):
+    if (x,y) not in __memoize_product:
+        a,b = x.a, x.b
+        c,d = y.a, y.b
+        result = KD(a*c - d.conjugate()*b, 
+                    d*a + b*c.conjugate())
+        __memoize_product[(x,y)] = result
+
+    return __memoize_product[(x,y)]
+
+
 class KD(object):
     '''
     Implementation of Cayley-Dickson algebra. 
@@ -16,11 +29,7 @@ class KD(object):
     def conjugate(self):
         return KD(self.a.conjugate(), -self.b)
     def __mul__(self, y):
-        a,b = self.a, self.b
-        c,d = y.a, y.b
-        return KD(a*c - d.conjugate()*b, 
-                  d*a + b*c.conjugate())
-
+        return cayley_product(self,y)
     def __neg__(self):
         return KD(-self.a,-self.b)
     def __add__(self,y):
@@ -92,11 +101,14 @@ if __name__ == "__main__":
     H = KD_construction(C.index)
     print "Quaternion\n",H
 
-    #O = KD_construction(H.index)
+    O = KD_construction(H.index)
     #print "Octonion\n",O
 
-    #S = KD_construction(O.index)
+    S = KD_construction(O.index)
     #print "Sedenion\n",S
+
+    T = KD_construction(S.index)
+    D = KD_construction(T.index)
 
     # Expected output
     '''
