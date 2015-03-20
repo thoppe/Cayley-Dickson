@@ -33,8 +33,14 @@ The [sedenions](http://en.wikipedia.org/wiki/Sedenion) form a 16-dimensional non
 ![centumduodetrigintanions](figures/K7.png)
 
 ### Ducentiquinquagintasexions (256ions)
-_not computed yet_
+![Ducentiquinquagintasexions](figures/K8.png)
 
+Suggested names for the higher orders come from this [Stack Exchange question](http://english.stackexchange.com/q/234607/17096). None of the following tables have been computed yet.
+
+#### Quincentumduodecion (512-ion)
+#### Millevigequaternion (1024-ion)
+#### Duomillequadragoction (2048-ion)
+#### Quadrimillenonagesextion (4096-ion)
 
 
 
