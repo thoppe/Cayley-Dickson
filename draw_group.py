@@ -7,6 +7,8 @@ import src.cayley_dickson as KD
 import graph_tool as gt
 import graph_tool.draw as gtd
 
+order = 2
+
 def KD_table(order):
     reals = [1,]
     X = pd.DataFrame(1, index=reals,columns=reals)
@@ -23,17 +25,6 @@ def construct_group(order):
         G[a.group_index(),b.group_index()] = (a*b).group_index()
     return G, members
 
-def permutation_loop(G,start_idx):
-    '''For a given starting index, determine the cycle.'''
-    seen = [start_idx,]
-    idx = start_idx
-
-    while True:
-        idx = G[idx][start_idx]
-        if idx in seen: break
-        seen.append(idx)
-    return seen
-
 color_set = ['r','g','b']     
 
 def cayley_graph(G):
@@ -48,29 +39,42 @@ def cayley_graph(G):
         for k in range(len(G)):
             ex[k][G[k][idx]] = 1
         return ex
-    C = []
 
+    C = []
     for k in range(1,N):
         C.append(edge_matrix(k))
         g = nx.from_numpy_matrix(sum(C))
         if nx.is_connected(g):
             break
 
+    # Determine the loop structure
+    g_loop = nx.from_numpy_matrix(C[0])
+    loops = sorted(list(nx.connected_components(g_loop)))
+    
+    # loops always come in groups of four
+    square = np.array([[-1,-1.0],[-1,1],[1,1],[1,-1]])*(1/np.sqrt(2))
+
     g = gt.Graph(directed=True)
     g.add_vertex(N)
+
+    pos = g.new_vertex_property("vector<double>")
+    for k,loop in enumerate(loops):
+        for idx,r in zip(loop,square):
+            pos[g.vertex(idx)] = r*(k+1)
+            print idx, r+k
+
     for k,c in enumerate(C):
-        print c
         edges = zip(*np.where(c))
         print edges
         for e1,e2 in edges:
             print e1,e2
             g.add_edge(e1,e2)
-    return g
+    return g, pos
 
-G,members = construct_group(2)
-g = cayley_graph(G)
-print g
-pos = gtd.sfdp_layout(g,multilevel=True)
+G,members = construct_group(order)
+g,pos = cayley_graph(G)
+
+#pos = gtd.sfdp_layout(g,multilevel=True)
 #pos = gtd.fruchterman_reingold_layout(g)
 #pos = gtd.arf_layout(g)
 #pos = gtd.radial_tree_layout(g,1)

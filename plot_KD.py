@@ -9,6 +9,8 @@ parser.add_argument('--f_png', type=str,default="K{order}.png")
 parser.add_argument('--dont_save', action='store_true')
 parser.add_argument('--dont_show', action='store_true')
 parser.add_argument('-n', '--order', type=int,default=2)
+parser.add_argument('-s', '--figsize', type=float,default=6,
+                    help="Figure size in inches")
 args = parser.parse_args()
 
 def KD_table(order):
@@ -40,7 +42,7 @@ sns.set_style("white")
 rect  = mpl.patches.Rectangle
 
 palette_name = "RdBu_r"
-fig, ax = plt.subplots(figsize=(8,8))
+fig, ax = plt.subplots(figsize=(args.figsize,args.figsize))
 
 if args.diverging_colormap:
     pal = sns.color_palette(palette_name, 2*N+1)
@@ -82,7 +84,7 @@ ax.get_yaxis().set_ticks([])
 plt.tight_layout()
 
 if not args.dont_save:
-    f_png = args.f_png.format(order=args.order)
+    f_png = args.f_png.format(order=args.order,bbox_inches="tight")
     plt.savefig(f_png)
 
 if not args.dont_show:
