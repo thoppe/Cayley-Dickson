@@ -1,19 +1,21 @@
 import pandas as pd
+import functools
 import itertools
 import numbers
 
-# Pull the to the outside so we can provide memoization
-__memoize_product = {}
-def cayley_product(x,y):
-    if (x,y) not in __memoize_product:
-        a,b = x.a, x.b
-        c,d = y.a, y.b
-        result = KD(a*c - d.conjugate()*b, 
-                    d*a + b*c.conjugate())
-        __memoize_product[(x,y)] = result
+memoize_multiplication = False
 
-    return __memoize_product[(x,y)]
+def memoize(obj):
+    cache = obj.cache = {}
+    @functools.wraps(obj)
+    def memoizer(*args):
+        if args not in cache:
+            cache[args] = obj(*args)
+        return cache[args]
+    def not_memoizer(*args):
+        return obj(*args)
 
+    return memoizer if memoize_multiplication else not_memoizer
 
 class KD(object):
     '''
@@ -28,8 +30,13 @@ class KD(object):
     # These two classes define the construction.
     def conjugate(self):
         return KD(self.a.conjugate(), -self.b)
+
+    @memoize
     def __mul__(self, y):
-        return cayley_product(self,y)
+        a,b = self.a, self.b
+        c,d = y.a, y.b
+        return KD(a*c - d.conjugate()*b, 
+                  d*a + b*c.conjugate())
     def __neg__(self):
         return KD(-self.a,-self.b)
     def __add__(self,y):
