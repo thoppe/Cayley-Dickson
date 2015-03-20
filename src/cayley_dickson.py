@@ -17,6 +17,9 @@ def memoize(obj):
 
     return memoizer if memoize_multiplication else not_memoizer
 
+def is_number(x):
+    return isinstance(x, numbers.Number)
+
 class KD(object):
     '''
     Implementation of Cayley-Dickson algebra. 
@@ -26,8 +29,9 @@ class KD(object):
     def __init__(self,a,b):
         self.a = a
         self.b = b
+        self.order = len(tuple(self))
 
-    # These two classes define the construction.
+    # These two classes, conjugate and __mul__, define the construction.
     def conjugate(self):
         return KD(self.a.conjugate(), -self.b)
 
@@ -50,23 +54,44 @@ class KD(object):
     def __eq__(self,y):
         return self.a==y.a and self.b==y.b
 
-    def __repr__(self):
-        '''Without this custom implementation, the number of parentheses
-        # is too damn high.'''
-        a_s = str(self.a).replace("(","").replace(")","")
-        b_s = str(self.b).replace("(","").replace(")","")
-        return "({},{})".format(a_s,b_s)
-
     def __hash__(self):
         '''Hash is needed for pandas dataframes (I think).'''
         return hash((self.a,self.b))
 
     def zero_out(self):
         '''Creating a "zero" object requires recursion.'''
-        if isinstance(self.a, numbers.Number):
+        if is_number(self.a):
             return KD(0,0)
         else:
             return KD(self.a.zero_out(), self.b.zero_out())
+
+    def __iter__(self):
+        if is_number(self.a):
+            yield self.a
+            yield self.b
+            return
+        for x in self.a:  yield x
+        for y in self.b:  yield y
+
+    def __repr__(self):
+        '''Without this custom implementation, the number of parentheses
+        is too damn high.'''
+        return str(tuple(self))
+
+    def group_index(self):
+        '''Returns the index this would be in a group for a multipication
+        table. For example, complex numbers 1=>0, i=>1, -1=>2, -i=>3.'''
+        print self.order
+        
+        try:
+            return tuple(self).index(1)
+        except:
+            pass
+        try:
+            return self.order + tuple(self).index(-1)
+        except:
+            msg = "Not a unit direction"
+            raise ValueError(msg)
 
 def expand_basis(basis):
     '''
@@ -76,7 +101,7 @@ def expand_basis(basis):
     '''
 
     first_term = basis[0]
-    if isinstance(first_term, numbers.Number):
+    if is_number(first_term):
         zero = 0
     else:
         zero = first_term.zero_out()
@@ -108,14 +133,14 @@ if __name__ == "__main__":
     H = KD_construction(C.index)
     print "Quaternion\n",H
 
-    O = KD_construction(H.index)
+    #O = KD_construction(H.index)
     #print "Octonion\n",O
 
-    S = KD_construction(O.index)
+    #S = KD_construction(O.index)
     #print "Sedenion\n",S
 
-    T = KD_construction(S.index)
-    D = KD_construction(T.index)
+    #T = KD_construction(S.index)
+    #D = KD_construction(T.index)
 
     # Expected output
     '''
