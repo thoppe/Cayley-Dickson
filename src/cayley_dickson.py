@@ -3,7 +3,7 @@ import functools
 import itertools
 import numbers
 
-memoize_multiplication = False
+memoize_multiplication = True
 
 def memoize(obj):
     cache = obj.cache = {}
@@ -29,7 +29,7 @@ class KD(object):
     def __init__(self,a,b):
         self.a = a
         self.b = b
-        self.order = len(tuple(self))
+        self.terms = len(tuple(self))
 
     # These two classes, conjugate and __mul__, define the construction.
     def conjugate(self):
@@ -81,14 +81,12 @@ class KD(object):
     def group_index(self):
         '''Returns the index this would be in a group for a multipication
         table. For example, complex numbers 1=>0, i=>1, -1=>2, -i=>3.'''
-        print self.order
-        
         try:
             return tuple(self).index(1)
         except:
             pass
         try:
-            return self.order + tuple(self).index(-1)
+            return self.terms + tuple(self).index(-1)
         except:
             msg = "Not a unit direction"
             raise ValueError(msg)

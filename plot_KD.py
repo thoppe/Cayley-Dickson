@@ -19,19 +19,16 @@ def KD_table(order):
     return X
 
 def identify_table(X):
-    IDX = range(1,len(X)+1)
-    lookup = dict(zip(IDX,X.index))
-    Z = pd.DataFrame(index=X.index,columns=X.columns)
-
-    for idx,val in lookup.items():
-        Z[X==( val)] =  idx
-        Z[X==(-val)] = -idx
-
+    n = X.index[0].terms
+    Z = X.applymap(lambda x:x.group_index())+1
+    Z[Z>n] = -(Z[Z>n]-n)
     return Z.values.astype(float)
 
 C = KD_table(args.order)
 Z = identify_table(C)
 N = Z.shape[0]
+
+print "Drawing graph"
 
 if args.order<=2:
     print C
@@ -43,10 +40,7 @@ sns.set_style("white")
 rect  = mpl.patches.Rectangle
 
 palette_name = "RdBu_r"
-#palette_name = "hls"
-
-
-fig, ax = plt.subplots(figsize=(5,5))
+fig, ax = plt.subplots(figsize=(8,8))
 
 if args.diverging_colormap:
     pal = sns.color_palette(palette_name, 2*N+1)
