@@ -4,15 +4,16 @@
 Implementation of the [Cayley-Dickson](http://en.wikipedia.org/wiki/Cayley%E2%80%93Dickson_construction) process in python. 
 Requires [`pandas`](http://pandas.pydata.org/) and [`numpy`](http://www.numpy.org/) to create the multiplication tables and [`seaborn`](http://stanford.edu/~mwaskom/software/seaborn/), [`networkx`](https://networkx.github.io/), and [`graph-tool`](https://graph-tool.skewed.de/) to display.
 
+#### Algebras names
+While the lower order algebras (up to sedenions) have agreed upon names, the infrequent usage of the larger orders has led to an inconsistent Latin naming scheme. 
+Suggested names for the higher orders come from this [Stack Exchange question](http://english.stackexchange.com/q/234607/17096). 
+If two names are given, they are in order: the complete distributive form and the commonly known name.
+
 #### Visualization
-We can visualize the multipication tables with a diverging colormap. 
+We can visualize the multiplication tables with a diverging colormap. 
 Red values are positive, blue values are negative. 
 For example, with the complex numbers `1 => least red`, `i => most red`, `-1 => least blue`, `-i => most blue`.
 Additionally, for the smaller algebras, we can construct the [Cayley Graph](http://en.wikipedia.org/wiki/Cayley_graph).
-
-#### Naming of the algerbas
-While the lower order algerbas (up to sedenions) have agreed upon names, the infrequent usage of the larger order algrebras has led to inconnsistant Latin names. 
-Suggested names for the higher orders come from this [Stack Exchange question](http://english.stackexchange.com/q/234607/17096). If two names are given they are the complete distributive form and the other, more commenlly known name.
 
 ### Complex numbers
 A [complex number](http://en.wikipedia.org/wiki/Complex_number) is a number that can be expressed in the form `a + bi`, where `a` and `b` are real numbers and `i` is the imaginary unit. They are a normed division algebra over the real numbers. There is no natural linear ordering on the set of complex numbers.
@@ -51,4 +52,3 @@ The [sedenions](http://en.wikipedia.org/wiki/Sedenion) form a 16-dimensional non
 #### Miliaviceniquaternions (1024-ion)
 #### Binamiliaduodequinquagenions (2048-ion)
 #### Quaternamilianonagenisenions (4096-ion)
-
