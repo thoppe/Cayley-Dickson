@@ -146,7 +146,6 @@ def cayley_index_name(x):
     if val in q_names:
         return q_names[val]
 
-
     return None
     
 

@@ -49,7 +49,7 @@ def draw_cayley_graph(order):
     # Determine the loop structure
     g_loop = nx.from_numpy_matrix(C[0])
     loops = sorted(list(nx.connected_components(g_loop)))
-    loops = [np.roll(x,k) for k,x in enumerate(loops)]
+    loops = [np.roll(x,-k) for k,x in enumerate(loops)]
     
     # loops always come in groups of four
     square = np.array([[-1,-1.0],[-1,1],[1,1],[1,-1]])*(1/np.sqrt(2))
@@ -63,7 +63,7 @@ def draw_cayley_graph(order):
         for idx,r in zip(loop,square):
             v = g.vertex(idx)
             name = KD.cayley_index_name(members[idx])
-            if name is None: name = idx
+            if name is None: name = "e{}".format(idx)
 
             pos[v]   = r*(k+1)
             label[v] = name
@@ -77,11 +77,24 @@ def draw_cayley_graph(order):
             ex = g.add_edge(e1,e2)
             edge_color[ex] = edge_color_set[k]
 
-    gtd.graph_draw(g,pos=pos,
-                   vertex_text=label,
-                   vertex_font_size=18,
-                   edge_color=edge_color,
-                   vertex_size=30)
+    f_svg = (args.f_svg).format(order=args.order)
+    output= None
+
+    g_args = {                          
+        "pos":pos,
+        "vertex_text":label,
+        "vertex_font_size":args.fontsize,
+        "edge_color":edge_color,
+        "vertex_size":40,
+        "output_size":(args.figsize,)*2,
+    }
+
+    if not args.dont_save:
+        print "Saving to {}, size {}".format(f_svg,args.figsize)
+        gtd.graph_draw(g,output=f_svg,fmt="svg",**g_args)
+
+    if not args.dont_show:
+        gtd.graph_draw(g,**g_args)
 
 brewer_set1_colors = [
     (0.89411765336990356, 0.10196078568696976, 0.10980392247438431,.9), 
@@ -92,17 +105,22 @@ brewer_set1_colors = [
     (0.99315647868549117, 0.9870049982678657, 0.19915417450315812,.9), 
     (0.65845446095747107, 0.34122261685483596, 0.1707958535236471,.9), 
     (0.95850826852461868, 0.50846600392285513, 0.74492888871361229,.9)
-]
+]*10
 edge_color_set = brewer_set1_colors
-
 
 if __name__ == "__main__":
 
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--f_png', type=str,default="g{order}.png")
+    parser.add_argument('--f_svg', type=str,default="g{order}.svg")
     parser.add_argument('-n', '--order', type=int,default=2)
+    parser.add_argument('--dont_save', action='store_true')
+    parser.add_argument('--dont_show', action='store_true')
+    parser.add_argument('-s', '--figsize', type=float,default=3.2)
+    parser.add_argument('--fontsize', type=float,default=18)
     args = parser.parse_args()
+
+    args.figsize *= 100
 
     draw_cayley_graph(args.order)
 
