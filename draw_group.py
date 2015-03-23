@@ -77,8 +77,8 @@ def draw_cayley_graph(order):
             ex = g.add_edge(e1,e2)
             edge_color[ex] = edge_color_set[k]
 
-    f_svg = (args.f_svg).format(order=args.order)
-    output= None
+    f_output = ((args.f_output).format(order=args.order) + '.' +
+                args.save_format_extension)
 
     g_args = {                          
         "pos":pos,
@@ -86,12 +86,13 @@ def draw_cayley_graph(order):
         "vertex_font_size":args.fontsize,
         "edge_color":edge_color,
         "vertex_size":40,
-        "output_size":(args.figsize,)*2,
+        "output_size":(int(args.figsize),)*2,
     }
 
     if not args.dont_save:
-        print "Saving to {}, size {}".format(f_svg,args.figsize)
-        gtd.graph_draw(g,output=f_svg,fmt="svg",**g_args)
+        print "Saving to {}, size {}".format(f_output,args.figsize)
+        gtd.graph_draw(g,output=f_output,
+                       fmt=args.save_format_extension,**g_args)
 
     if not args.dont_show:
         gtd.graph_draw(g,**g_args)
@@ -112,11 +113,12 @@ if __name__ == "__main__":
 
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--f_svg', type=str,default="g{order}.svg")
+    parser.add_argument('--f_output', type=str,default="g{order}")
     parser.add_argument('-n', '--order', type=int,default=2)
     parser.add_argument('--dont_save', action='store_true')
     parser.add_argument('--dont_show', action='store_true')
-    parser.add_argument('-s', '--figsize', type=float,default=3.2)
+    parser.add_argument('-e','--save_format_extension',default='svg' )
+    parser.add_argument('-s', '--figsize', type=float,default=4.0)
     parser.add_argument('--fontsize', type=float,default=18)
     args = parser.parse_args()
 
