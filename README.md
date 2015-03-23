@@ -10,18 +10,18 @@ We can visualize the multipication tables with a diverging colormap. Red values 
 A [complex number](http://en.wikipedia.org/wiki/Complex_number) is a number that can be expressed in the form `a + bi`, where `a` and `b` are real numbers and `i` is the imaginary unit. They are a normed division algebra over the real numbers. There is no natural linear ordering on the set of complex numbers.
 
 ![Complex](figures/K1.png)
-![ComplexG](figures/g1.svg)
+![ComplexG](figures/g1.png)
 
 ### Quaternions
 [Quaternions](http://en.wikipedia.org/wiki/Quaternion) are a normed division algebra over the real numbers. They are noncommutative. The unit quaternions can be thought of as a choice of a group structure on the 3-sphere S3 that gives the group Spin(3), which is isomorphic to SU(2) and also to the universal cover of SO(3).
 
 ![Quaternions](figures/K2.png)
-![QuaternionsG](figures/g2.svg)
+![QuaternionsG](figures/g2.png)
 
 ### Octonions
 The [octonions](http://en.wikipedia.org/wiki/Octonion) are a normed division algebra over the real numbers. They are noncommutative and nonassociative, but satisfy a weaker form of associativity, namely they are alternative.
 ![Octonions](figures/K3.png)
-![OctonionsG](figures/g3.svg)
+![OctonionsG](figures/g3.png)
 
 ### Sedenions
 The [sedenions](http://en.wikipedia.org/wiki/Sedenion) form a 16-dimensional noncommutative and nonassociative algebra over the reals obtained by applying the Cayley–Dickson construction to the octonions.
