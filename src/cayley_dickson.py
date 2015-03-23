@@ -120,6 +120,36 @@ def KD_construction(basis):
         K[a][b] = a*b
     return K
 
+def cayley_index_name(x):
+    ''' A "nice" set of names for the smaller systems. '''
+    from ast import literal_eval
+    val = literal_eval(str(x))
+
+    # Complex names
+    complex_names = {(1,0):'1',
+                     (0,1):'i',
+                     (-1,0):'-1',
+                     (0,-1):'-i'}
+    if val in complex_names:
+        return complex_names[val]
+
+    # Quaternion names
+    q_names = {(1,0,0,0):'1',
+               (0,1,0,0):'i',
+               (0,0,1,0):'j',
+               (0,0,0,1):'k',
+               (-1,0,0,0):'-1',
+               (0,-1,0,0):'-i',
+               (0,0,-1,0):'-j',
+               (0,0,0,-1):'-k'}
+
+    if val in q_names:
+        return q_names[val]
+
+
+    return None
+    
+
 if __name__ == "__main__":
 
     # The reals
