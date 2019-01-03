@@ -71,6 +71,8 @@ The [sedenions](http://en.wikipedia.org/wiki/Sedenion) form a 16-dimensional non
 
 #### Quingeniduodenions (512-ion)
 
+![Ducentiquinquagintasexions](figures/K9.png)
+
 
 #### Miliaviceniquaternions (1024-ion)
 
